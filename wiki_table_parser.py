@@ -96,8 +96,3 @@ class WikiTableParser(HTMLParser):
         elif self.state == 'data-cell':
             self.current = self.current + '' + data
 
-# instantiate the parser and fed it some HTML
-#parser = WikiTableParser()
-# parser.feed('<table class="wikitable sortable" style="text-align: right"><tr><th>Rank<br /></th><th>Country</th><th>Total in km (sq mi)</th><th>Land in km (sq mi)</th><th>Water in km (sq mi)</th><th>&#160;% water</th><th class="unsortable">Notes</th></tr><tr><td><span style="display:none">7000100000000000000</span>1</td><td align="left"><span class="flagicon"><img alt="" src="//upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/22px-Flag_of_Russia.svg.png" width="22" height="15" class="thumbborder" srcset="//upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/33px-Flag_of_Russia.svg.png 1.5x, //upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/44px-Flag_of_Russia.svg.png 2x" />&#160;</span><a href="/wiki/Russia" title="Russia">Russia</a></td><td><span style="display:none">7007170982420000000</span>17,098,242<br />(6,601,668)</td><td><span style="display:none">7007163777420000000</span>16,377,742<br />(6,323,482)</td><td><span style="display:none">7005720500000000000</span>720,500<br />(278,200)</td><td>4.21</td><td align="left">Largest country in the world.</td></tr><tr>')
-
-#print parser.getData()
