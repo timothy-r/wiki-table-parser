@@ -85,10 +85,8 @@ class WikiTableParser(HTMLParser):
     def handle_data(self, data):
         if self.state == 'header-cell':
             self.current = self.current + '' + data
-            print "header-cell  : ", self.current
         elif self.state == 'data-cell':
             self.current = self.current + '' + data
-            #print "data-cell : ", self.current
 
 # instantiate the parser and fed it some HTML
 parser = WikiTableParser()
