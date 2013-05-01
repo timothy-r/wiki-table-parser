@@ -39,9 +39,13 @@ class WikiTableParser(HTMLParser):
             else:
                 self.state = ''
                 print self.header_row                
+                self.data.append(self.header_row)
+                self.header_row = []
         elif 'data-row' == self.state:
             if 'end' == location:
-                print self.data_row                
+                print self.data_row
+                self.data.append(self.data_row)
+                self.data_row = []
 
     def set_cell_state(self, cell, location):
         if 'td' == cell:
