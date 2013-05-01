@@ -8,6 +8,10 @@ from HTMLParser import HTMLParser
 
 class WikiTableParser(HTMLParser):
     data = []
+    current = ''
+    data_row = []
+    header_row = []
+
     state = 'none' # also 'table' 'header-row' (reading header row)  'header-cell' and 'data-row' (reading regular row) 'data-cell'
     key = ''
 
@@ -15,7 +19,7 @@ class WikiTableParser(HTMLParser):
         self.data = []
 	
 	# if tag == table and state == 'none' attrs.class contains wikitable then state = 'table'
-    def set_table_state(self, attrs):
+    def set_table_state(self, attrs, location):
         for t in attrs:
             if t[0] == 'class' and 0 == t[1].find('wikitable'):
                 self.state = 'table'
@@ -25,31 +29,66 @@ class WikiTableParser(HTMLParser):
     def set_row_state(self, location):
         # if in a table then state = header-row otherwise
         if 'table' == self.state:
-            self.state = 'header-row'
+            if 'start' == location:
+                self.state = 'header-row'
+            else:
+                self.state = 'none'
         elif 'header-row' == self.state:
-            self.state = 'data-row'
+            if 'start' == location:
+                self.state = 'data-row'
+            else:
+                self.state = ''
+                print self.header_row                
+        elif 'data-row' == self.state:
+            if 'end' == location:
+                print self.data_row                
 
-    def set_cell_state(self):
-        if 'data-row' == self.state:
-            self.state = 'data-cell'
+    def set_cell_state(self, cell, location):
+        if 'td' == cell:
+            if 'start' == location:
+                self.state = 'data-cell'
+            else:
+                self.state = 'data-row'
+                self.data_row.append(self.current)
+                self.current = ''
+        elif 'th' == cell:
+            if 'start' == location:
+                self.state = 'header-cell';
+            else:
+                self.state = 'header-row'
+                self.header_row.append(self.current)
+                self.current = ''
+
 
     def handle_starttag(self, tag, attrs):
         if 'table' == tag:
-			self.set_table_state(attrs)
+			self.set_table_state(attrs, 'start')
         elif 'tr' == tag:
             self.set_row_state('start')
         elif 'th' == tag:
-            self.state = 'header-cell'
+            self.set_cell_state('th', 'start')
+            # self.state = 'header-cell'
         elif 'td' == tag:
-            self.set_cell_state()
+            self.set_cell_state('td', 'start')
 
     def handle_endtag(self, tag):
-        if self.state == 'table':
-            print "tag : ", tag
+        if 'table' == tag:
+			self.set_table_state(attrs, 'end')
+        elif 'tr' == tag:
+            self.set_row_state('end')
+        elif 'th' == tag:
+            self.set_cell_state('th', 'end')
+            #self.state = 'header-row'
+        elif 'td' == tag:
+            self.set_cell_state('td', 'end')
 
     def handle_data(self, data):
         if self.state == 'header-cell':
-            print "header data  : ", data
+            self.current = self.current + '' + data
+            print "header-cell  : ", self.current
+        elif self.state == 'data-cell':
+            self.current = self.current + '' + data
+            #print "data-cell : ", self.current
 
 # instantiate the parser and fed it some HTML
 parser = WikiTableParser()
