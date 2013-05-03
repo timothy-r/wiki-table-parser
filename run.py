@@ -1,6 +1,6 @@
 # python runner
 import sys
-from wiki_table_parser import WikiTableParser
+from parser import WikiTableParser
 
 # 1 download a file from a url
 print sys.argv[1]
