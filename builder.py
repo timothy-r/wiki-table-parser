@@ -13,7 +13,6 @@ class Builder():
         self.data.append(self.headers)
     
     def addHeader(self, name):
-        print "addHeader ", name
         self.headers.append(name)
 
     def newRow(self):
