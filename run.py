@@ -19,6 +19,8 @@ p = WikiTableParser(b)
 p.feed(f.read())
 
 # 4 write the data back out as json
-rows = p.getData()
+#rows = p.getData()
+
+rows = b.getData()
 
 print rows

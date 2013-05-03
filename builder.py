@@ -7,11 +7,13 @@ class Builder():
 
     # reset state 
     def newData(self):
-        self.data = []
         self.headers = []
         self.row = []
+        self.data = []
+        self.data.append(self.headers)
     
     def addHeader(self, name):
+        print "addHeader ", name
         self.headers.append(name)
 
     def newRow(self):

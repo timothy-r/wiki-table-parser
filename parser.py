@@ -1,8 +1,8 @@
-# take a wiki table from a html source and return an assoc data array
+# take a wiki table from a html source and call appropriate builder methods
+# acts as the director in the builder pattern
 # [	
 #	 {"name":"x", "key":"value", "other-key":"more"}
 # ], ...
-#
 
 from HTMLParser import HTMLParser
 
@@ -12,6 +12,7 @@ class WikiTableParser(HTMLParser):
     current = ''
     data_row = []
     header_row = []
+    reading = 0
 
     state = 'none' # also 'table' 'header-row' (reading header row)  'header-cell' and 'data-row' (reading regular row) 'data-cell'
     key = ''
@@ -20,20 +21,28 @@ class WikiTableParser(HTMLParser):
         HTMLParser.__init__(self)
         self.builder = builder
         self.data = []
-
+    
+    # deprecated - use builder.getData()
     def getData(self):
 		return self.data
 
 	# if tag == table and state == 'none' attrs.class contains wikitable then state = 'table'
     def set_table_state(self, attrs, location):
+        print "new table ", attrs, ' ' , location
         if 'start' == location:
             for t in attrs:
             	if t[0] == 'class' and 0 == t[1].find('wikitable'):
-                	self.state = 'table'
-                	return
-        	self.state = 'none'
+                    self.state = 'table'
+                    self.reading = 1
+                    self.builder.newData()
+                    return
+        self.state = 'none'
+        self.reading = 0
 
     def set_row_state(self, location):
+        if self.reading == 0:
+            return
+
         # if in a table then state = header-row otherwise
         if 'table' == self.state:
             if 'start' == location:
@@ -55,6 +64,9 @@ class WikiTableParser(HTMLParser):
                 self.data_row = []
 
     def set_cell_state(self, cell, location):
+        if self.reading == 0:
+            return
+
         if 'td' == cell:
             if 'start' == location:
                 self.state = 'data-cell'
@@ -68,6 +80,7 @@ class WikiTableParser(HTMLParser):
             else:
                 self.state = 'header-row'
                 self.header_row.append(self.current)
+                self.builder.addHeader(self.current)
                 self.current = ''
 
 
