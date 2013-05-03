@@ -3,12 +3,24 @@
 class Builder():
 
     def __init(self):
-        self.data = []
+        self.newData()
 
+    # reset state 
+    def newData(self):
+        self.data = []
+        self.headers = []
+        self.row = []
+    
     def addHeader(self, name):
         self.headers.append(name)
 
-    def addData(self, value):
+    def newRow(self):
+        self.data.append(self.row)
+        self.row = []
+
+    # should add the value to a key from headers
+    # row should be an assoc array / hash
+    def addItem(self, value):
         self.row.append(value)
 
     def getData(self):
