@@ -17,8 +17,7 @@ class WikiTableParser(HTMLParser):
     key = ''
 
     def __init__(self, builder):
-        # hack - should call parent __init__ method
-        self.reset()
+        HTMLParser.__init__(self)
         self.builder = builder
         self.data = []
 
