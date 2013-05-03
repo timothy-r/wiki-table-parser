@@ -2,3 +2,4 @@ html-data
 txt-data
 sql
 *.pyc
+*.swp
