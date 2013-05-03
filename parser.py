@@ -7,6 +7,7 @@
 from HTMLParser import HTMLParser
 
 class WikiTableParser(HTMLParser):
+    builder = 0
     data = []
     current = ''
     data_row = []
@@ -15,7 +16,10 @@ class WikiTableParser(HTMLParser):
     state = 'none' # also 'table' 'header-row' (reading header row)  'header-cell' and 'data-row' (reading regular row) 'data-cell'
     key = ''
 
-    def __init(self):
+    def __init__(self, builder):
+        # hack - should call parent __init__ method
+        self.reset()
+        self.builder = builder
         self.data = []
 
     def getData(self):
@@ -61,7 +65,7 @@ class WikiTableParser(HTMLParser):
                 self.current = ''
         elif 'th' == cell:
             if 'start' == location:
-                self.state = 'header-cell';
+                self.state = 'header-cell'
             else:
                 self.state = 'header-row'
                 self.header_row.append(self.current)

@@ -1,6 +1,7 @@
 # python runner
 import sys
 from parser import WikiTableParser
+from builder import Builder
 
 # 1 download a file from a url
 print sys.argv[1]
@@ -12,7 +13,9 @@ f = open(name,'r')
 #print f
 
 # 3 use a WikiTableParser to read data from the string into object / array
-p = WikiTableParser();
+b = Builder()
+p = WikiTableParser(b)
+
 p.feed(f.read())
 
 # 4 write the data back out as json

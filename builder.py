@@ -2,7 +2,7 @@
 
 class Builder():
 
-    def __init(self):
+    def __init__(self):
         self.newData()
 
     # reset state 
