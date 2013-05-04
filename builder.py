@@ -3,6 +3,7 @@
 class Builder():
 
     def __init__(self):
+        """ reset internal data on construct """
         self.newData()
 
     # reset state 
@@ -13,6 +14,7 @@ class Builder():
         self.data.append(self.headers)
     
     def addHeader(self, name):
+        """ add a new header value """
         self.headers.append(name)
 
     def newRow(self):
@@ -22,9 +24,11 @@ class Builder():
     # should add the value to a key from headers
     # row should be an assoc array / hash
     def addItem(self, value):
+        """ add a new cell value """
         self.row.append(value)
 
     def getData(self):
+        """ return the produced data """
         return self.data
 
 
