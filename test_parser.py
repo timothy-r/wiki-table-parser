@@ -15,22 +15,22 @@ class TestParser(unittest.TestCase):
 
     def assertEmptyData(self, product):
         """ assert that the product list has a single empty item """
-        self.assertTrue(1 == len(product))
-        self.assertTrue(0 == len(product[0]))
+        self.assertEqual(1, len(product))
+        self.assertEqual(0, len(product[0]))
 
     def assertHeaderLength(self, product, length):
-        self.assertTrue(length == len(product[0]))
+        self.assertEqual(length, len(product[0]))
         
     def assertOneHeader(self, product, value):
-        self.assertTrue(1 == len(product))
+        self.assertEqual(1, len(product))
         self.assertHeaderLength(product, 1)
         self.assertHeaderValue(product, 0, value)
 
     def assertHeaderValue(self, product, index, value):
-        self.assertTrue(value == product[0][index])
+        self.assertEqual(value, product[0][index])
 
     def assertDataValue(self, product, row, index, value):
-        self.assertTrue(value == product[row][index])
+        self.assertEqual(value, product[row][index])
 
     def test_parse_missing_reads_no_data(self):
         """ test parsing no table """
@@ -91,25 +91,35 @@ class TestParser(unittest.TestCase):
         p.feed(html)
         # assert b.getData() has one header list with 1 item
         product = b.getData()
-        self.assertTrue(1 == len(product))
+        self.assertEqual(1, len(product))
         self.assertHeaderLength(product, 3)
         self.assertHeaderValue(product, 0, 'one')
         self.assertHeaderValue(product, 1, 'two')
         self.assertHeaderValue(product, 2, 'three')
 
     def test_parse_table_data(self):
-        """ test simple table header parsing """
+        """ test simple table data parsing """
         b = Builder()
         p = WikiTableParser(b)
         html = self.get_table_data_fixture()
         p.feed(html)
         # assert b.getData() has one header list with 1 item
         product = b.getData()
-        self.assertTrue(2 == len(product))
+        self.assertEqual(2, len(product))
         self.assertHeaderValue(product, 0, 'one')
         self.assertHeaderValue(product, 1, 'two')
         self.assertDataValue(product, 1, 0, '1')
         self.assertDataValue(product, 1, 1, 'England')
+
+    def test_ignore_hidden_values(self):
+        """ test parser ignores data flagged as hidden """
+        b = Builder()
+        p = WikiTableParser(b)
+        html = self.get_hidden_cell_data_fixture()
+        p.feed(html)
+        # assert b.getData() has one header list with 1 item
+        product = b.getData()
+        self.assertDataValue(product, 1, 0, 'Show this')
 
     def get_non_html(self):
         return 'some non-html>< text'
@@ -138,8 +148,13 @@ class TestParser(unittest.TestCase):
         """ return html that contains table data """
         return '<html><body><table class="wikitable"><tr><th>one</th><th>two</th></tr><tr><td>1</td><td>England</td></tr></table></body></html>'
 
+    def get_hidden_cell_data_fixture(self):
+        """ return html that contains hidden cell data """
+        return '<html><body><table class="wikitable"><tr><th>one</th></tr><tr><td><span style="display:none;">Hidden text </span>Show this</td></tr></table></body></html>'
 
 
 # run that test thing
 if __name__ == '__main__':
     unittest.main()
+
+
