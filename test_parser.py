@@ -40,41 +40,41 @@ class TestParser(unittest.TestCase):
         p.feed(html)
         self.product = b.getData()
 
-    def test_parse_missing_reads_no_data(self):
+    def testParseMissingReadsNoData(self):
         """ test parsing no table """
         html = self.get_missing_fixture()
         self.whenProductIsGenerated(html)
 
         self.assertEmptyData(self.product)
 
-    def test_parse_non_html_reads_no_data(self):
+    def testParseNonhtmlReadsNoData(self):
         """ test parsing non-html string """
         html = self.get_non_html()
         self.whenProductIsGenerated(html)
 
         self.assertEmptyData(self.product)
 
-    def test_parse_wrong_table_reads_no_data(self):
+    def testParseWrongTableReadsNoData(self):
         """ test parsing no table """
         html = self.get_wrong_table_fixture()
         self.whenProductIsGenerated(html)
 
         self.assertEmptyData(self.product)
 
-    def test_parse_single_header(self):
+    def testParseSingleHeader(self):
         """ test simple table header parsing """
         html = self.get_single_header_fixture()
         self.whenProductIsGenerated(html)
 
         self.assertOneHeader(self.product, 'one')
 
-    def test_multi_class_table(self):
+    def testMultiClassTable(self):
         """ test simple table header parsing """
         html = self.get_multi_class_fixture()
         self.whenProductIsGenerated(html)
         self.assertOneHeader(self.product, 'one')
 
-    def test_parse_multi_header(self):
+    def testParseMultiHeader(self):
         """ test simple table header parsing """
         html = self.get_multi_header_fixture()
         self.whenProductIsGenerated(html)
@@ -85,7 +85,7 @@ class TestParser(unittest.TestCase):
         self.assertHeaderValue(self.product, 1, 'two')
         self.assertHeaderValue(self.product, 2, 'three')
 
-    def test_parse_table_data(self):
+    def testParseTableData(self):
         """ test single row table data parsing """
         html = self.get_table_data_fixture()
         self.whenProductIsGenerated(html)
@@ -96,7 +96,7 @@ class TestParser(unittest.TestCase):
         self.assertDataValue(self.product, 1, 0, '1')
         self.assertDataValue(self.product, 1, 1, 'England')
 
-    def test_ignore_hidden_values(self):
+    def testIgnoreHiddenValues(self):
         """ test parser ignores data flagged as hidden """
         html = self.get_hidden_cell_data_fixture()
         self.whenProductIsGenerated(html)

@@ -17,6 +17,9 @@ class TestBuilder(unittest.TestCase):
     def assertDataValue(self, product, row, index, value):
         self.assertEqual(value, product[row][index])
 
+    def assertDataLength(self, product, length):
+        self.assertEqual(length, len(product) -1)
+
     def testNewDataResetsData(self):
         b = Builder()
         b.addHeader('first')
@@ -28,6 +31,7 @@ class TestBuilder(unittest.TestCase):
         b = Builder()
         b.addHeader('blue')
         p = b.getData()
+        self.assertDataLength(p, 0)
         self.assertHeaderValue(p, 0, 'blue')    
 
     def testAddTwoHeaders(self):
@@ -35,6 +39,7 @@ class TestBuilder(unittest.TestCase):
         b.addHeader('blue')
         b.addHeader('green')
         p = b.getData()
+        self.assertDataLength(p, 0)
         self.assertHeaderValue(p, 0, 'blue')    
         self.assertHeaderValue(p, 1, 'green')    
 
@@ -42,6 +47,17 @@ class TestBuilder(unittest.TestCase):
         b = Builder()
         b.addHeader('Rome')
         b.addItem('1AD')
-        b.newRow()
         p = b.getData()
+        self.assertDataLength(p, 1)
         self.assertDataValue(p, 1, 0, '1AD')    
+
+    def testAddTwoRows(self):
+        b = Builder()
+        b.addHeader('Year')
+        b.addItem('1AD')
+        b.newRow()
+        b.addItem('100BC')
+        p = b.getData()
+        self.assertDataLength(p, 2)
+        self.assertDataValue(p, 1, 0, '1AD')    
+        self.assertDataValue(p, 2, 0, '100BC')    
