@@ -94,7 +94,18 @@ class TestParser(unittest.TestCase):
         self.assertHeaderValue(product, 1, 'two')
         self.assertHeaderValue(product, 2, 'three')
 
-    
+   
+
+    def test_parse_multi_header(self):
+        """ test simple table header parsing """
+        b = Builder()
+        p = WikiTableParser(b)
+        html = self.get_table_data_fixture()
+        p.feed(html)
+        # assert b.getData() has one header list with 1 item
+        product = b.getData()
+        self.assertTrue(2 == len(product))
+
     def get_non_html(self):
         return 'some non-html>< text'
 
@@ -117,6 +128,11 @@ class TestParser(unittest.TestCase):
     def get_multi_class_fixture(self):
         """ return html that contains multiple table classes value """
         return '<html><body><table class="ouch wikitable other"><tr><th>one</th></tr></table></body></html>'
+
+    def get_table_data_fixture(self):
+        """ return html that contains table data """
+        return '<html><body><table class="wikitable"><tr><th>one</th><th>two</th></tr><tr><td>1</td><td>England</td></tr></table></body></html>'
+
 
 
 # run that test thing
