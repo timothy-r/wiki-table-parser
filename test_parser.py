@@ -16,9 +16,10 @@ class TestParser(unittest.TestCase):
         """ remove test fixtures """
 
     def assertEmptyData(self, product):
-        """ assert that the product list has a single empty item """
+        """ assert that the product list has empty headers and data """
         self.assertEqual(1, len(product))
         self.assertEqual(0, len(product[0]))
+        #self.assertEqual(0, len(product[1]))
 
     def assertHeaderLength(self, product, length):
         self.assertEqual(length, len(product[0]))
@@ -86,10 +87,10 @@ class TestParser(unittest.TestCase):
         self.assertHeaderValue(self.product, 2, 'three')
 
     def test_parse_table_data(self):
-        """ test simple table data parsing """
+        """ test single row table data parsing """
         html = self.get_table_data_fixture()
         self.whenProductIsGenerated(html)
-
+        print self.product
         self.assertEqual(2, len(self.product))
         self.assertHeaderValue(self.product, 0, 'one')
         self.assertHeaderValue(self.product, 1, 'two')

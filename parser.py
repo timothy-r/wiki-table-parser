@@ -75,7 +75,6 @@ class WikiTableParser(HTMLParser):
                 self.builder.addHeader(self.current)
                 self.current = ''
 
-
     def handle_starttag(self, tag, attrs):
         self.hidden = self.attrContains(attrs, 'style', 'display:none')
 
