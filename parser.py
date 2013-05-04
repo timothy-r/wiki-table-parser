@@ -21,8 +21,7 @@ class WikiTableParser(HTMLParser):
     def set_table_state(self, attrs, location):
         if 'start' == location:
             for t in attrs:
-                print t[1].find('wikitable')
-            	if t[0] == 'class' and 0 == t[1].find('wikitable'):
+            	if t[0] == 'class' and -1 != t[1].find('wikitable'):
                     self.state = 'table'
                     self.reading = 1
                     self.builder.newData()
