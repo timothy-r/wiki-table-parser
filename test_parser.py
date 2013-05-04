@@ -19,7 +19,6 @@ class TestParser(unittest.TestCase):
         """ assert that the product list has empty headers and data """
         self.assertEqual(1, len(product))
         self.assertEqual(0, len(product[0]))
-        #self.assertEqual(0, len(product[1]))
 
     def assertHeaderLength(self, product, length):
         self.assertEqual(length, len(product[0]))
