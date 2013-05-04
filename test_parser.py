@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# test case of parser
+# integration test case of parser
+
 import unittest
 from parser import WikiTableParser
 from builder import Builder
@@ -13,8 +14,20 @@ class TestParser(unittest.TestCase):
         """ remove test fixtures """
 
     def assertEmptyData(self, product):
+        """ assert that the product list has a single empty item """
         self.assertTrue(1 == len(product))
         self.assertTrue(0 == len(product[0]))
+
+    def assertHeaderLength(self, product, length):
+        self.assertTrue(length == len(product[0]))
+        
+    def assertOneHeader(self, product, value):
+        self.assertTrue(1 == len(product))
+        self.assertHeaderLength(product, 1)
+        self.assertHeaderValue(product, 0, value)
+
+    def assertHeaderValue(self, product, index, value):
+        self.assertTrue(value == product[0][index])
 
     def test_parse_missing_reads_no_data(self):
         """ test parsing no table """
@@ -26,6 +39,17 @@ class TestParser(unittest.TestCase):
         product = b.getData()
         self.assertEmptyData(product)
 
+    def test_parse_non_html_reads_no_data(self):
+        """ test parsing non-html string """
+        b = Builder()
+        p = WikiTableParser(b)
+        html = self.get_non_html()
+        p.feed(html)
+        # assert b.getData() has one empty list
+        product = b.getData()
+        self.assertEmptyData(product)
+
+
     def test_parse_wrong_table_reads_no_data(self):
         """ test parsing no table """
         b = Builder()
@@ -36,7 +60,6 @@ class TestParser(unittest.TestCase):
         product = b.getData()
         self.assertEmptyData(product)
 
-
     def test_parse_single_header(self):
         """ test simple table header parsing """
         b = Builder()
@@ -45,9 +68,7 @@ class TestParser(unittest.TestCase):
         p.feed(html)
         # assert b.getData() has one header list with 1 item
         product = b.getData()
-        self.assertTrue(1 == len(product))
-        self.assertTrue(1 == len(product[0]))
-        self.assertTrue('one' == product[0][0])
+        self.assertOneHeader(product, 'one')
 
     def test_multi_class_table(self):
         """ test simple table header parsing """
@@ -57,11 +78,7 @@ class TestParser(unittest.TestCase):
         p.feed(html)
         # assert b.getData() has one header list with 1 item
         product = b.getData()
-        print product
-        self.assertTrue(1 == len(product))
-        self.assertTrue(1 == len(product[0]))
-        self.assertTrue('one' == product[0][0])
-
+        self.assertOneHeader(product, 'one')
 
     def test_parse_multi_header(self):
         """ test simple table header parsing """
@@ -72,11 +89,14 @@ class TestParser(unittest.TestCase):
         # assert b.getData() has one header list with 1 item
         product = b.getData()
         self.assertTrue(1 == len(product))
-        self.assertTrue(3 == len(product[0]))
-        self.assertTrue('one' == product[0][0])
-        self.assertTrue('two' == product[0][1])
-        self.assertTrue('three' == product[0][2])
+        self.assertHeaderLength(product, 3)
+        self.assertHeaderValue(product, 0, 'one')
+        self.assertHeaderValue(product, 1, 'two')
+        self.assertHeaderValue(product, 2, 'three')
 
+    
+    def get_non_html(self):
+        return 'some non-html>< text'
 
     def get_missing_fixture(self):
         """ return html that contains no table data """
