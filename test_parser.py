@@ -29,6 +29,9 @@ class TestParser(unittest.TestCase):
     def assertHeaderValue(self, product, index, value):
         self.assertTrue(value == product[0][index])
 
+    def assertDataValue(self, product, row, index, value):
+        self.assertTrue(value == product[row][index])
+
     def test_parse_missing_reads_no_data(self):
         """ test parsing no table """
         b = Builder()
@@ -94,9 +97,7 @@ class TestParser(unittest.TestCase):
         self.assertHeaderValue(product, 1, 'two')
         self.assertHeaderValue(product, 2, 'three')
 
-   
-
-    def test_parse_multi_header(self):
+    def test_parse_table_data(self):
         """ test simple table header parsing """
         b = Builder()
         p = WikiTableParser(b)
@@ -105,6 +106,10 @@ class TestParser(unittest.TestCase):
         # assert b.getData() has one header list with 1 item
         product = b.getData()
         self.assertTrue(2 == len(product))
+        self.assertHeaderValue(product, 0, 'one')
+        self.assertHeaderValue(product, 1, 'two')
+        self.assertDataValue(product, 1, 0, '1')
+        self.assertDataValue(product, 1, 1, 'England')
 
     def get_non_html(self):
         return 'some non-html>< text'
