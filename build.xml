@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+
+  <target name="all-tests" depends="parser-tests"/>
+
+  <target name="parser-tests">
+    <exec executable="python">
+      <arg value="-m"/>
+      <arg value="unittest"/>
+      <arg value="test_parser"/>
+      <arg value="test_builder"/>
+    </exec>
+  </target>
+</project>

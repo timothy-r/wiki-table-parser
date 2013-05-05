@@ -89,7 +89,6 @@ class TestParser(unittest.TestCase):
         """ test single row table data parsing """
         html = self.get_table_data_fixture()
         self.whenProductIsGenerated(html)
-        print self.product
         self.assertEqual(2, len(self.product))
         self.assertHeaderValue(self.product, 0, 'one')
         self.assertHeaderValue(self.product, 1, 'two')
