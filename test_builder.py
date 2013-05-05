@@ -10,9 +10,6 @@ class TestBuilder(unittest.TestCase):
         """ assert that the product list has empty headers and data """
         self.assertEqual(0, len(product))
 
-    def assertHeaderValue(self, product, index, value):
-        self.assertEqual(value, product[0][index])
-
     def assertDataValue(self, product, row, key, value):
         self.assertEqual(value, product[row][key])
 
@@ -26,13 +23,7 @@ class TestBuilder(unittest.TestCase):
         p = b.getData()
         self.assertEmptyData(p)
 
-    def testAddHeader(self):
-        b = Builder()
-        b.addHeader('blue')
-        p = b.getData()
-        self.assertDataLength(p, 0)
-
-    def testAddTwoHeaders(self):
+    def testAddHeaderDoesNotProduceData(self):
         b = Builder()
         b.addHeader('blue')
         b.addHeader('green')
