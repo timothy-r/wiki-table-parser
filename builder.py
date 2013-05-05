@@ -8,27 +8,28 @@ class Builder():
 
     # reset state 
     def newData(self):
-        self.headers = []
+        self.keys = []
         self.row = {}
         self.data = []
     
-    def addHeader(self, name):
-        """ add a new header value """
-        self.headers.append(name)
+    def addKey(self, name):
+        """ add a new key value """
+        self.keys.append(name)
 
     def newRow(self):
+        """ start adding items to a new set of data """
         if (len(self.row) > 0):
             self.data.append(self.row.copy())
         self.row = {}
 
     def addItem(self, value):
         """ add a new cell value for the current key """
-        if (len(self.headers) > len(self.row)):
-            key = self.headers[len(self.row)] 
+        if (len(self.keys) > len(self.row)):
+            key = self.keys[len(self.row)] 
             self.row[key] = value
         else:
             # throw exception
-            raise Exception('too few headers')
+            raise Exception('too few keys')
 
     def getData(self):
         """ return the produced data """

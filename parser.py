@@ -72,7 +72,7 @@ class WikiTableParser(HTMLParser):
                 self.state = 'header-cell'
             else:
                 self.state = 'header-row'
-                self.builder.addHeader(self.current)
+                self.builder.addKey(self.current)
                 self.current = ''
 
     def handle_starttag(self, tag, attrs):

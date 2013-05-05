@@ -18,21 +18,21 @@ class TestBuilder(unittest.TestCase):
 
     def testCallingNewDataResetsData(self):
         b = Builder()
-        b.addHeader('first')
+        b.addKey('first')
         b.newData()
         p = b.getData()
         self.assertEmptyData(p)
 
     def testAddHeaderDoesNotProduceData(self):
         b = Builder()
-        b.addHeader('blue')
-        b.addHeader('green')
+        b.addKey('blue')
+        b.addKey('green')
         p = b.getData()
         self.assertDataLength(p, 0)
 
     def testAddItem(self):
         b = Builder()
-        b.addHeader('Rome')
+        b.addKey('Rome')
         b.addItem('1AD')
         p = b.getData()
         self.assertDataLength(p, 1)
@@ -40,8 +40,8 @@ class TestBuilder(unittest.TestCase):
 
     def testAddTwoItems(self):
         b = Builder()
-        b.addHeader('City')
-        b.addHeader('Year')
+        b.addKey('City')
+        b.addKey('Year')
         b.addItem('Rome')
         b.addItem('1AD')
         p = b.getData()
@@ -51,7 +51,7 @@ class TestBuilder(unittest.TestCase):
 
     def testAddTwoRows(self):
         b = Builder()
-        b.addHeader('Year')
+        b.addKey('Year')
         b.addItem('1AD')
         b.newRow()
         b.addItem('100BC')
@@ -62,7 +62,7 @@ class TestBuilder(unittest.TestCase):
 
     def testAddingTooManyValuesThrowsException(self):
         b = Builder()
-        b.addHeader('Year')
+        b.addKey('Year')
         b.addItem('1AD')
         """ this next method should throw the exception """
         self.assertRaises(Exception, b.addItem, '100BC')
