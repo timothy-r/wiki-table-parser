@@ -21,16 +21,14 @@ class Builder():
             self.data.append(self.row.copy())
         self.row = {}
 
-    # should add the value to a key from headers
-    # row should be an assoc array / hash
     def addItem(self, value):
-        """ add a new cell value """
+        """ add a new cell value for the current key """
         if (len(self.headers) > len(self.row)):
             key = self.headers[len(self.row)] 
             self.row[key] = value
         else:
-            print 'error'
             # throw exception
+            raise Exception('too few headers')
 
     def getData(self):
         """ return the produced data """

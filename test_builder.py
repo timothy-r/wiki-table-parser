@@ -60,6 +60,13 @@ class TestBuilder(unittest.TestCase):
         self.assertDataValue(p, 0, 'Year', '1AD')    
         self.assertDataValue(p, 1, 'Year', '100BC')    
 
+    def testAddingTooManyValuesThrowsException(self):
+        b = Builder()
+        b.addHeader('Year')
+        b.addItem('1AD')
+        """ this next method should throw the exception """
+        self.assertRaises(Exception, b.addItem, '100BC')
+
 # run that test thing
 if __name__ == '__main__':
     unittest.main()
