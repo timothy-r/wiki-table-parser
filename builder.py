@@ -9,10 +9,8 @@ class Builder():
     # reset state 
     def newData(self):
         self.headers = []
-        self.row = []
+        self.row = {}
         self.data = []
-        self.data.append(self.headers)
-        #self.data.append(self.row)
     
     def addHeader(self, name):
         """ add a new header value """
@@ -20,20 +18,24 @@ class Builder():
 
     def newRow(self):
         if (len(self.row) > 0):
-            self.data.append(list(self.row))
-        self.row = []
+            self.data.append(self.row.copy())
+        self.row = {}
 
     # should add the value to a key from headers
     # row should be an assoc array / hash
     def addItem(self, value):
         """ add a new cell value """
-        #print value
-        self.row.append(value)
+        if (len(self.headers) > len(self.row)):
+            key = self.headers[len(self.row)] 
+            self.row[key] = value
+        else:
+            print 'error'
+            # throw exception
 
     def getData(self):
         """ return the produced data """
         if (len(self.row) > 0):
-            self.data.append(list(self.row))
+            self.data.append(self.row.copy())
         return self.data
 
 

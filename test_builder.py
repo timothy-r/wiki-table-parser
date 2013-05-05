@@ -8,19 +8,18 @@ class TestBuilder(unittest.TestCase):
     
     def assertEmptyData(self, product):
         """ assert that the product list has empty headers and data """
-        self.assertEqual(1, len(product))
-        self.assertEqual(0, len(product[0]))
+        self.assertEqual(0, len(product))
 
     def assertHeaderValue(self, product, index, value):
         self.assertEqual(value, product[0][index])
 
-    def assertDataValue(self, product, row, index, value):
-        self.assertEqual(value, product[row][index])
+    def assertDataValue(self, product, row, key, value):
+        self.assertEqual(value, product[row][key])
 
     def assertDataLength(self, product, length):
-        self.assertEqual(length, len(product) -1)
+        self.assertEqual(length, len(product))
 
-    def testNewDataResetsData(self):
+    def testCallingNewDataResetsData(self):
         b = Builder()
         b.addHeader('first')
         b.newData()
@@ -32,7 +31,6 @@ class TestBuilder(unittest.TestCase):
         b.addHeader('blue')
         p = b.getData()
         self.assertDataLength(p, 0)
-        self.assertHeaderValue(p, 0, 'blue')    
 
     def testAddTwoHeaders(self):
         b = Builder()
@@ -40,8 +38,6 @@ class TestBuilder(unittest.TestCase):
         b.addHeader('green')
         p = b.getData()
         self.assertDataLength(p, 0)
-        self.assertHeaderValue(p, 0, 'blue')    
-        self.assertHeaderValue(p, 1, 'green')    
 
     def testAddItem(self):
         b = Builder()
@@ -49,7 +45,18 @@ class TestBuilder(unittest.TestCase):
         b.addItem('1AD')
         p = b.getData()
         self.assertDataLength(p, 1)
-        self.assertDataValue(p, 1, 0, '1AD')    
+        self.assertDataValue(p, 0, 'Rome', '1AD')    
+
+    def testAddTwoItems(self):
+        b = Builder()
+        b.addHeader('City')
+        b.addHeader('Year')
+        b.addItem('Rome')
+        b.addItem('1AD')
+        p = b.getData()
+        self.assertDataLength(p, 1)
+        self.assertDataValue(p, 0, 'City', 'Rome')    
+        self.assertDataValue(p, 0, 'Year', '1AD')    
 
     def testAddTwoRows(self):
         b = Builder()
@@ -59,5 +66,10 @@ class TestBuilder(unittest.TestCase):
         b.addItem('100BC')
         p = b.getData()
         self.assertDataLength(p, 2)
-        self.assertDataValue(p, 1, 0, '1AD')    
-        self.assertDataValue(p, 2, 0, '100BC')    
+        self.assertDataValue(p, 0, 'Year', '1AD')    
+        self.assertDataValue(p, 1, 'Year', '100BC')    
+
+# run that test thing
+if __name__ == '__main__':
+    unittest.main()
+
