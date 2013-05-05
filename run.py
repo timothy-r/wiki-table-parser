@@ -22,4 +22,5 @@ p.feed(f.read())
 
 rows = b.getData()
 
-print rows
+for d in rows:
+    print d
