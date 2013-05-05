@@ -53,7 +53,7 @@ class TestBuilder(unittest.TestCase):
         b = Builder()
         b.addKey('Year')
         b.addItem('1AD')
-        b.newRow()
+        b.newSet()
         b.addItem('100BC')
         p = b.getData()
         self.assertDataLength(p, 2)

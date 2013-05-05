@@ -54,7 +54,7 @@ class WikiTableParser(HTMLParser):
                 self.state = ''
         elif 'data-row' == self.state:
             if 'end' == location:
-                self.builder.newRow()
+                self.builder.newSet()
 
     def setCellState(self, cell, location):
         if not self.reading:
