@@ -18,18 +18,10 @@ class WikiTableParser(HTMLParser):
         HTMLParser.__init__(self)
         self.builder = builder
    
-    def attrContains(self, attrs, key, value):
-        """ test if attribute with key contains a value """
-        for t in attrs:
-            if t[0] == key and -1 != t[1].find(value):
-                return True
-
-        return False
-
 	# if tag == table and state == 'none' attrs.class contains wikitable then state = 'table'
-    def setTableState(self, attrs, location):
+    def setTableState(self, alist, location):
         if 'start' == location:
-            if (self.attrContains(attrs, 'class', 'wikitable')):
+            if (alist.contains('class', 'wikitable')):
                 self.state = 'table'
                 self.reading = True
                 self.builder.newData()
@@ -76,10 +68,12 @@ class WikiTableParser(HTMLParser):
                 self.current = ''
 
     def handle_starttag(self, tag, attrs):
-        self.hidden = self.attrContains(attrs, 'style', 'display:none')
+        alist = AttributeList(attrs)
+        self.hidden = alist.contains('style', 'display:none')
+        #self.hidden = self.attrContains(attrs, 'style', 'display:none')
 
         if 'table' == tag:
-			self.setTableState(attrs, 'start')
+			self.setTableState(alist, 'start')
         elif 'tr' == tag:
             self.setRowState('start')
         elif 'th' == tag:
@@ -88,10 +82,11 @@ class WikiTableParser(HTMLParser):
             self.setCellState('td', 'start')
 
     def handle_endtag(self, tag):
+        alist = AttributeList([])
         self.hidden = False
 
         if 'table' == tag:
-			self.setTableState('', 'end')
+			self.setTableState(alist, 'end')
         elif 'tr' == tag:
             self.setRowState('end')
         elif 'th' == tag:
@@ -105,4 +100,21 @@ class WikiTableParser(HTMLParser):
                 self.current = self.current + '' + data
             elif self.state == 'data-cell':
                 self.current = self.current + '' + data
+
+
+""" Wrapper for an attribute list """
+
+class AttributeList:
+    attributes = [];
+
+    def __init__(self, attributes):
+        self.attributes = attributes
+       
+    def contains(self, key, value):
+        """ test if attribute with key contains a value """
+        for a in self.attributes:
+            if a[0] == key and -1 != a[1].find(value):
+                return True
+
+        return False
 
