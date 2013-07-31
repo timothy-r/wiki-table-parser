@@ -14,4 +14,3 @@ class AttributeList:
 
         return False
 
-

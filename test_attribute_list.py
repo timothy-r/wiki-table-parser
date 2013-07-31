@@ -20,4 +20,10 @@ class TestAttributeList(unittest.TestCase):
         value = '2'
         self.assertFalse(alist.contains(key, value))
 
-
+    def testAttributeListContains(self):
+        """ tests AttributeList with values reports that it contains them """
+        key = 'a'
+        value = '2'
+        l = [(key, value)]
+        alist = AttributeList(l)
+        self.assertTrue(alist.contains(key, value))
