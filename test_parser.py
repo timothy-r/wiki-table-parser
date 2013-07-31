@@ -2,7 +2,7 @@
 # integration test case of parser
 
 import unittest
-from parser import *
+from table_parser import *
 from builder import Builder
 
 class TestParser(unittest.TestCase):

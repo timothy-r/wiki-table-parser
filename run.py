@@ -1,6 +1,6 @@
 # python runner
 import sys
-from parser import WikiTableParser
+from table_parser import *
 from builder import Builder
 
 # 1 download a file from a url
