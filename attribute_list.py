@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Wrapper for an attribute list """
 
 class AttributeList:

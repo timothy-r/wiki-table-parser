@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # python class to build data from commands
 
 class Builder():
@@ -36,5 +37,4 @@ class Builder():
         if (len(self.set) > 0):
             self.data.append(self.set.copy())
         return self.data
-
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # take a wiki table from a html source and call appropriate builder methods
 # acts as the director in the builder pattern
 # [	
