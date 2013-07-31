@@ -1,4 +1,4 @@
 wiki-table-parser
 =================
 
-Parses wiki table data of countries
+Parses wiki table data of country information
